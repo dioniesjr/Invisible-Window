@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Invisible Window visibility probe</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 1.5rem auto; padding: 0 1rem; }
+    .panel { background: #f4f4f5; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .panel h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+    code { background: #e4e4e7; padding: 0.1rem 0.35rem; border-radius: 4px; }
+    #log { font: 13px/1.45 ui-monospace, monospace; max-height: 280px; overflow: auto; white-space: pre-wrap; }
+    .ok { color: #15803d; }
+    .warn { color: #b45309; }
+  </style>
+</head>
+<body>
+  <h1>Tab visibility probe</h1>
+  <p>Open with Invisible Window loaded. Alt-tab or switch browser tabs; with Keep tabs active on, properties should stay active and the log should stay quiet.</p>
+
+  <div class="panel">
+    <h2>Live state</h2>
+    <div id="state"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Event log</h2>
+    <div id="log"></div>
+    <button type="button" id="clear">Clear log</button>
+  </div>
+
+  <script>
+    const logEl = document.getElementById('log');
+    const stateEl = document.getElementById('state');
+
+    function ts() {
+      return new Date().toLocaleTimeString();
+    }
+
+    function append(msg, cls) {
+      const line = document.createElement('div');
+      if (cls) line.className = cls;
+      line.textContent = '[' + ts() + '] ' + msg;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function refreshState() {
+      const patched = window.__quizfetchKeepTabActivePatched === true;
+      stateEl.innerHTML =
+        '<div>__quizfetchKeepTabActivePatched: <code>' + patched + '</code></div>' +
+        '<div>document.hidden: <code>' + document.hidden + '</code></div>' +
+        '<div>document.visibilityState: <code>' + document.visibilityState + '</code></div>' +
+        '<div>document.hasFocus(): <code>' + document.hasFocus() + '</code></div>';
+    }
+
+    const events = [
+      'visibilitychange', 'webkitvisibilitychange', 'blur', 'focus', 'focusin', 'focusout',
+      'pagehide', 'pageshow', 'mouseleave', 'mouseout'
+    ];
+
+    events.forEach((type) => {
+      document.addEventListener(type, () => append('document.' + type, 'warn'), true);
+      window.addEventListener(type, () => append('window.' + type, 'warn'), true);
+    });
+
+    setInterval(refreshState, 500);
+    refreshState();
+    append('Probe ready. Switch tabs or alt-tab to test.', 'ok');
+
+    document.getElementById('clear').onclick = () => { logEl.textContent = ''; };
+  </script>
+</body>
+</html>

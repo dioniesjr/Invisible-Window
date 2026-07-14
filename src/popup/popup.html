@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invisible Window</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Invisible Window</h1>
+      <p class="sub">Anti-detection only. Keeps pages looking focused when you alt-tab.</p>
+
+      <label class="row">
+        <span>Keep tabs active</span>
+        <input id="enabled" type="checkbox" />
+      </label>
+
+      <label class="row">
+        <span>Block Canvas leave tracking</span>
+        <input id="canvasShield" type="checkbox" />
+      </label>
+
+      <p id="status" class="status" aria-live="polite"></p>
+      <p class="hint">Hard-refresh open pages after changing toggles.</p>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

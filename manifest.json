@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "Invisible Window",
   "version": "1.0.0",
-  "description": "Keep tabs looking active on alt-tab: spoof visibility/focus and block Canvas quiz leave tracking.",
+  "description": "Keep browser tabs looking focused when you switch away, so pages do not treat the tab as idle.",
+  "homepage_url": "https://github.com/dioniesjr/Invisible-Window",
   "permissions": ["storage"],
   "background": {
     "service_worker": "src/background.js"
@@ -26,8 +27,7 @@
       "matches": ["http://*/*", "https://*/*"],
       "exclude_matches": [
         "*://chrome.google.com/*",
-        "*://chromewebstore.google.com/*",
-        "*://chrome-extension/*"
+        "*://chromewebstore.google.com/*"
       ],
       "js": ["src/content/keep-tab-active-bridge.js"],
       "run_at": "document_start",
@@ -37,8 +37,7 @@
       "matches": ["http://*/*", "https://*/*"],
       "exclude_matches": [
         "*://chrome.google.com/*",
-        "*://chromewebstore.google.com/*",
-        "*://chrome-extension/*"
+        "*://chromewebstore.google.com/*"
       ],
       "js": ["src/content/keep-tab-active.js"],
       "run_at": "document_start",
